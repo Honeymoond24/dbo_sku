@@ -29,10 +29,10 @@ session_start();
         </h5>
         <nav class="my-2 my-md-0 mr-md-3">
             <?php if (!isset($_SESSION['IDUser'])) : ?>
-                <a class="p-2 text-dark" href="login.php">Профиль</a>
                 <a class="btn btn-outline-primary" href="login.php" id="sign_in">Войти</a>
                 <a class="btn btn-outline-primary" href="signup.php" id="sign_up">Зарегистрироваться</a>
             <?php else: ?>
+                <a class="p-2 text-dark" href="profile.php">Профиль</a>
                 <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
             <?php endif; ?>
         </nav>
