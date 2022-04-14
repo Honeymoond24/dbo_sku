@@ -3,7 +3,7 @@ include_once 'header.php'
 ?>
 
     <h1 id="index-text">Добро пожаловать, <?php if (isset($_SESSION['IDUser'])) {
-            echo explode(" ", $_SESSION['usersFullName'])[0];
+            echo explode(" ", $_SESSION['usersFullName'])[1];
         } else {
             echo 'Гость';
         }

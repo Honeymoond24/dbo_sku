@@ -28,10 +28,15 @@ session_start();
         <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Система проведения письменного экзамена в СКУ</a>
         </h5>
         <nav class="my-2 my-md-0 mr-md-3">
-            <?php if (!isset($_SESSION['IDUser'])) : ?>
+            <?php if (!isset($_SESSION['IDUser'])): ?>
                 <a class="btn btn-outline-primary" href="login.php" id="sign_in">Войти</a>
                 <a class="btn btn-outline-primary" href="signup.php" id="sign_up">Зарегистрироваться</a>
-            <?php else: ?>
+            <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student'): ?>
+                <a class="p-2 text-dark" href="controls.php">Экзамены</a>
+                <a class="p-2 text-dark" href="profile.php">Профиль</a>
+                <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
+            <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
+                <a class="p-2 text-dark" href="controls.php">Экзамены</a>
                 <a class="p-2 text-dark" href="profile.php">Профиль</a>
                 <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
             <?php endif; ?>
