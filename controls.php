@@ -14,7 +14,19 @@ include_once 'header.php'
         </ul>
     </div>
 <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
-
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item">An active item</li>
+            <li class="list-group-item">A second item</li>
+            <li class="list-group-item">A third item</li>
+            <li class="list-group-item">A fourth item</li>
+            <li class="list-group-item">And a fifth one</li>
+        </ul>
+    </div>
+    <div class="main p-2">
+        <form action=""></form>
+        <button type="button" class="btn btn-primary">Добавить экзамен</button>
+    </div>
 <?php endif; ?>
 
 <?php

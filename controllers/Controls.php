@@ -1,16 +1,16 @@
 <?php
 
-require_once '../models/User.php';
+require_once '../models/Control.php';
 require_once '../helpers/session_helper.php';
 
-class Users
+class Controls
 {
 
-    private $userModel;
+    private $controlModel;
 
     public function __construct()
     {
-        $this->userModel = new User;
+        $this->controlModel = new Control;
     }
 
     public function register()
@@ -53,7 +53,7 @@ class Users
         }
 
         //User with the same email or password already exists
-        if ($this->userModel->findUserByEmail($data['usersEmail'])) {
+        if ($this->controlModel->findUserByEmail($data['usersEmail'])) {
             flash("register", "Электронная почта уже занята");
             redirect("../signup.php");
         }
@@ -63,7 +63,7 @@ class Users
         $data['usersPwd'] = password_hash($data['usersPwd'], PASSWORD_DEFAULT);
 
         //Register User
-        if ($this->userModel->register($data)) {
+        if ($this->controlModel->register($data)) {
             redirect("../login.php");
         } else {
             die("Что-то пошло не так");
@@ -88,9 +88,9 @@ class Users
         }
 
         //Check for user/email
-        if ($this->userModel->findUserByEmail($data['usersEmail'])) {
+        if ($this->controlModel->findUserByEmail($data['usersEmail'])) {
             //User Found
-            $loggedInUser = $this->userModel->login($data['usersEmail'], $data['usersPwd']);
+            $loggedInUser = $this->controlModel->login($data['usersEmail'], $data['usersPwd']);
             if ($loggedInUser) {
                 //Create session
                 $this->createUserSession($loggedInUser);
@@ -149,4 +149,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-    

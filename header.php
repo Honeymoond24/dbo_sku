@@ -25,7 +25,8 @@ session_start();
 <body>
 <div class="p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
     <div class="d-flex flex-column flex-md-row align-items-center container">
-        <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/">Система проведения письменного экзамена в СКУ</a>
+        <a title="На главную" href="/"><img class="logo" src="http://kts/img/logo_ru.png" style="filter: drop-shadow(1px 1px 3px #007bff);" alt="nkzu.kz"></a>
+        <h5 class="my-0 mr-md-auto font-weight-normal ml-3"><a href="/">Система проведения письменного экзамена в СКУ</a>
         </h5>
         <nav class="my-2 my-md-0 mr-md-3">
             <?php if (!isset($_SESSION['IDUser'])): ?>
@@ -35,7 +36,8 @@ session_start();
                 <a class="p-2 text-dark" href="controls.php">Экзамены</a>
                 <a class="p-2 text-dark" href="profile.php">Профиль</a>
                 <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
-            <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
+            <?php elseif (isset($_SESSION['IDUser']) and
+                ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
                 <a class="p-2 text-dark" href="controls.php">Экзамены</a>
                 <a class="p-2 text-dark" href="profile.php">Профиль</a>
                 <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>

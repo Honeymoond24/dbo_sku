@@ -37,16 +37,18 @@ include_once './helpers/session_helper.php';
         </div>
         <div class="form-group">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="usersType" id="inlineRadio1" value="student">
+                <input class="form-check-input" type="radio" name="usersType" id="inlineRadio1"
+                       value="student" required>
                 <label class="form-check-label" for="inlineRadio1">Студент</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="usersType" id="inlineRadio2" value="teacher">
+                <input class="form-check-input" type="radio" name="usersType" id="inlineRadio2"
+                       value="teacher" required>
                 <label class="form-check-label" for="inlineRadio2">Преподаватель</label>
             </div>
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="usersType" id="inlineRadio3"
-                       value="head_teacher">
+                       value="head_teacher" required>
                 <label class="form-check-label" for="inlineRadio3">Заведующий кафедрой</label>
             </div>
         </div>

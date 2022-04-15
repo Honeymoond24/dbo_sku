@@ -1,7 +1,8 @@
 <?php
+
 require_once '../libraries/Database.php';
 
-class User
+class Control
 {
 
     private $db;
@@ -92,6 +93,21 @@ class User
         //Execute
         if ($this->db->execute()) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function findControls($usersEmail)
+    {
+        $this->db->query('SELECT * FROM `controls` WHERE usersEmail = :usersEmail');
+        $this->db->bind(':usersEmail', $usersEmail);
+
+        $row = $this->db->single();
+
+        //Check row
+        if ($this->db->rowCount() > 0) {
+            return $row;
         } else {
             return false;
         }

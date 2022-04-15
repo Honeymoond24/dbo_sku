@@ -1,5 +1,5 @@
 </div>
-<div class="container">
+<div class="container mt-4">
     <div class="pt-4 pt-md-5 border-top" id="footer">
         <div class="row" style="margin: 0;">
             <div class="col-6 col-md">
