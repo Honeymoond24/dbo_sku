@@ -6,26 +6,26 @@ include_once 'header.php'
     <h5>Список назначенных экзаменов</h5>
     <div class="row">
         <ul class="list-group">
-            <li class="list-group-item active" aria-current="true">An active item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
+            <li class="list-group-item active" aria-current="true">Управление IT-проектами</li>
+            <li class="list-group-item">Программная инженерия</li>
+            <li class="list-group-item">Инструментальные средства разработки</li>
         </ul>
+        <div class="main card col-8 p-2 ml-2">
+            <form action=""></form>
+            <button type="button" class="btn btn-primary">Добавить экзамен</button>
+        </div>
     </div>
 <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
     <div class="row">
         <ul class="list-group">
-            <li class="list-group-item">An active item</li>
-            <li class="list-group-item">A second item</li>
-            <li class="list-group-item">A third item</li>
-            <li class="list-group-item">A fourth item</li>
-            <li class="list-group-item">And a fifth one</li>
+            <li class="list-group-item">Управление IT-проектами</li>
+            <li class="list-group-item">Программная инженерия</li>
+            <li class="list-group-item">Инструментальные средства разработки</li>
         </ul>
-    </div>
-    <div class="main p-2">
-        <form action=""></form>
-        <button type="button" class="btn btn-primary">Добавить экзамен</button>
+        <div class="main card col-8 p-2 ml-2">
+            <form action=""></form>
+            <button type="button" class="btn btn-primary">Добавить экзамен</button>
+        </div>
     </div>
 <?php endif; ?>
 
