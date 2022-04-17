@@ -8,41 +8,36 @@ session_start();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css" type="text/css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
     <title>СКУ</title>
 </head>
 <body>
-<div class="p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-    <div class="d-flex flex-column flex-md-row align-items-center container">
-        <a title="На главную" href="/"><img class="logo" src="http://kts/img/logo_ru.png" style="filter: drop-shadow(1px 1px 3px #007bff);" alt="nkzu.kz"></a>
-        <h5 class="my-0 mr-md-auto font-weight-normal ml-3"><a href="/">Система проведения письменного экзамена в СКУ</a>
-        </h5>
-        <nav class="my-2 my-md-0 mr-md-3">
-            <?php if (!isset($_SESSION['IDUser'])): ?>
-                <a class="btn btn-outline-primary" href="login.php" id="sign_in">Войти</a>
-                <a class="btn btn-outline-primary" href="signup.php" id="sign_up">Зарегистрироваться</a>
-            <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student'): ?>
-                <a class="p-2 text-dark" href="controls.php">Экзамены</a>
-                <a class="p-2 text-dark" href="profile.php">Профиль</a>
-                <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
-            <?php elseif (isset($_SESSION['IDUser']) and
-                ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
-                <a class="p-2 text-dark" href="controls.php">Экзамены</a>
-                <a class="p-2 text-dark" href="profile.php">Профиль</a>
-                <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
-            <?php endif; ?>
-        </nav>
+<header>
+    <div class="py-3 mb-4 border-bottom shadow-sm">
+        <div class="container d-flex flex-column flex-md-row align-items-center">
+            <a href="/" class="d-flex align-items-center .text-primary text-decoration-none">
+                <img class="logo" src="assets/img/logo_ru.png"
+                     style="filter: drop-shadow(1px 1px 3px #007bff);" alt="nkzu.kz">
+                <span class="ms-3 fs-5 fw-normal">Система проведения письменного экзамена в СКУ</span>
+            </a>
+            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                <?php if (!isset($_SESSION['IDUser'])): ?>
+                    <a class="btn btn-outline-primary me-3 py-2" href="login.php" id="sign_in">Войти</a>
+                    <a class="btn btn-outline-primary py-2" href="signup.php" id="sign_up">Зарегистрироваться</a>
+                <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student'): ?>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="controls.php">Экзамены</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="profile.php">Профиль</a>
+                    <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
+                <?php elseif (isset($_SESSION['IDUser']) and
+                    ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="controls.php">Экзамены</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="profile.php">Профиль</a>
+                    <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
+                <?php endif; ?>
+            </nav>
+        </div>
     </div>
-</div>
+</header>
 <div class="container">
