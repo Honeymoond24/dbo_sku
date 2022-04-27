@@ -47,7 +47,7 @@ include_once 'helpers/session_helper.php';
             <div class="row pb-3">
                 <div class="col-sm-3"></div>
                 <div class="col-sm-9">
-                    <a class="btn btn-outline-primary "
+                    <a class="btn btn-outline-primary"
                        href="?action=edit">Изменить</a>
                 </div>
             </div>

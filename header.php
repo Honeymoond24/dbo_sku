@@ -20,7 +20,7 @@ session_start();
         <div class="container d-flex flex-column flex-md-row align-items-center">
             <a href="/" class="d-flex align-items-center .text-primary text-decoration-none">
                 <img class="logo" src="assets/img/logo_ru.png"
-                     style="filter: drop-shadow(1px 1px 3px #007bff);" alt="nkzu.kz">
+                     style="filter: drop-shadow(1px 1px 3px #007bff);" alt="nku.edu.kz">
                 <span class="ms-3 fs-5 fw-normal">Система проведения письменного экзамена в СКУ</span>
             </a>
             <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
@@ -33,6 +33,11 @@ session_start();
                     <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
                 <?php elseif (isset($_SESSION['IDUser']) and
                     ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="controls.php">Экзамены</a>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="profile.php">Профиль</a>
+                    <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
+                <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'admin'): ?>
+                    <a class="me-3 py-2 text-dark text-decoration-none" href="controls.php">Пользователи</a>
                     <a class="me-3 py-2 text-dark text-decoration-none" href="controls.php">Экзамены</a>
                     <a class="me-3 py-2 text-dark text-decoration-none" href="profile.php">Профиль</a>
                     <a class="btn btn-outline-primary" href="./controllers/Users.php?q=logout" id="log_out">Выйти</a>
