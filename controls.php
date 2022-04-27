@@ -5,10 +5,11 @@ include_once 'header.php'
 <?php if (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student'): ?>
     <h5>Список назначенных экзаменов</h5>
     <div class="row">
-        <ul class="list-group col-4">
-            <li class="list-group-item active" aria-current="true">Управление IT-проектами</li>
+        <ul class="list-group col-4" id="controls">
             <li class="list-group-item">Программная инженерия</li>
-            <li class="list-group-item">Инструментальные средства разработки</li>
+<!--            <li class="list-group-item active" aria-current="true">Управление IT-проектами</li>-->
+<!--            <li class="list-group-item">Программная инженерия</li>-->
+<!--            <li class="list-group-item">Инструментальные средства разработки</li>-->
         </ul>
         <div class="main card col-8 p-2 ml-2">
             <form action=""></form>
