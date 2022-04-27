@@ -41,28 +41,22 @@
 <script>
     function insertHTML(url, data, div_class) {
         $.ajax({
+            // headers: {
+            //     'Content-Type': 'application/json'
+            // },
             type: 'POST',
             url: url,
+            dataType: 'json',
             data: data,
             response: 'text',
             success: function (data) {
                 $(div_class).html(data);
-                $(div_class).hide().fadeIn(700);
+                console.log('ajax', data);
             }
         })
     }
 
-    function sendRequest(method, url, body = null) {
-        const headers = {
-            'Content-Type': 'application/json'
-        }
-
-        return fetch(url, {
-            method: method,
-            headers: headers,
-            body: JSON.stringify(body)
-        })
-    }
+    insertHTML('controllers/Controls.php', {'type': 'GetControls'}, 'list-group-item')
 
     // function insertHTML(url, data, div_class) {
     //     $.ajax({
@@ -70,19 +64,31 @@
     //         url: url,
     //         data: data,
     //         response: 'text',
-    //         success: function(data) {
+    //         success: function (data) {
     //             $(div_class).html(data);
     //             $(div_class).hide().fadeIn(700);
     //         }
     //     })
     // }
 
-    function sendRequestWithImage(url, body) {
-        return fetch(url, {
-            method: 'POST',
-            body: body
-        })
-    }
+    // function sendRequest(method, url, body = null) {
+    //     const headers = {
+    //         'Content-Type': 'application/json'
+    //     }
+    //
+    //     return fetch(url, {
+    //         method: method,
+    //         headers: headers,
+    //         body: JSON.stringify(body)
+    //     })
+    // }
+
+    // function sendRequestWithImage(url, body) {
+    //     return fetch(url, {
+    //         method: 'POST',
+    //         body: body
+    //     })
+    // }
 </script>
 </body>
 </html>

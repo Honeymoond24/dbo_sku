@@ -20,7 +20,7 @@ class Control
     INNER JOIN groups on groups.IDGroup = controlsforgroups.IDGroup 
     INNER JOIN students on students.IDGroup = groups.IDGroup 
     INNER JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline 
-    WHERE students.IDGroup = controlsforgroups.IDGroup AND students.IDStudent = :usersId;');
+    WHERE students.IDGroup = controlsforgroups.IDGroup AND students.IDStudent = :usersId');
         $this->db->bind(':usersId', $usersId);
 
         $row = $this->db->resultSet();
