@@ -16,10 +16,12 @@ class Controls
     public function GetControls()
     {
         $controls = $this->controlModel->findControlsByUid($_SESSION['IDUser']);
+
 //        var_dump(json_encode($controls));
         if ($controls) {
 //            var_dump(json_encode($controls));
             echo json_encode($controls);
+            return json_encode($controls);
         } else {
             return false;
         }
