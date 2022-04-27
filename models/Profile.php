@@ -20,7 +20,8 @@ class Profile
                             StudentFirstName = :usersName2, StudentPatronymic = :usersName3
         WHERE IDStudent = :IDStudent;');
         $this->db->bind(':fullName',
-            $data['usersName1'] . $data['usersName2'] . $data['usersName3']);
+            $data['usersName1'] . ' ' .
+            $data['usersName2'] . ' ' . $data['usersName3']);
         $this->db->bind(':usersName1', 'usersName1');
         $this->db->bind(':usersName2', 'usersName2');
         $this->db->bind(':usersName3', 'usersName3');

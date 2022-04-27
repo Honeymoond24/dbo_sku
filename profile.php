@@ -45,7 +45,8 @@ include_once 'helpers/session_helper.php';
             </div>
             <hr>
             <div class="row pb-3">
-                <div class="col-sm-12">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9">
                     <a class="btn btn-outline-primary "
                        href="?action=edit">Изменить</a>
                 </div>
@@ -61,12 +62,14 @@ include_once 'helpers/session_helper.php';
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <div class="input-group">
-                            <input type="text" id="usersName1" name="usersName1"
-                                   class="form-control" placeholder="Фамилия">
+                            <input type="text" id="usersName1" name="usersName1" class="form-control"
+                                   placeholder="Фамилия" value="<?= explode(" ", $_SESSION['usersFullName'])[0] ?>">
                             <input type="text" id="usersName2" name="usersName2"
-                                   class="form-control" placeholder="Имя">
+                                   class="form-control" placeholder="Имя"
+                                   value="<?= explode(" ", $_SESSION['usersFullName'])[1] ?>">
                             <input type="text" id="usersName3" name="usersName3"
-                                   class="form-control" placeholder="Отчество">
+                                   class="form-control" placeholder="Отчество"
+                                   value="<?= explode(" ", $_SESSION['usersFullName'])[2] ?>">
                         </div>
                     </div>
                 </div>
@@ -77,7 +80,8 @@ include_once 'helpers/session_helper.php';
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <input type="email" id="usersEmail" name="usersEmail"
-                               class="form-control" placeholder="Электронный адрес">
+                               class="form-control" placeholder="Электронный адрес"
+                               value="<?= $_SESSION['usersEmail'] ?>">
                     </div>
                 </div>
                 <hr>
@@ -87,7 +91,7 @@ include_once 'helpers/session_helper.php';
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <input type="text" id="usersISC" name="usersISC"
-                               class="form-control" placeholder="ИКС">
+                               class="form-control" placeholder="ИКС" value="<?= $_SESSION['usersISC'] ?>">
                     </div>
                 </div>
                 <hr>
@@ -97,12 +101,13 @@ include_once 'helpers/session_helper.php';
                     </div>
                     <div class="col-sm-9 text-secondary">
                         <input type="text" id="GroupName" name="GroupName"
-                               class="form-control" placeholder="Группа">
+                               class="form-control" placeholder="Группа" value="<?= $_SESSION['GroupName'] ?>">
                     </div>
                 </div>
                 <hr>
                 <div class="row pb-3">
-                    <div class="col-sm-12">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">
                         <button type="submit" class="btn btn-outline-primary">Подтвердить</button>
                         <a class="btn btn-outline-secondary" href="profile.php">Отмена</a>
                     </div>
