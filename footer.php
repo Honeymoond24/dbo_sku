@@ -37,58 +37,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
         integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
-<script>
-    function insertHTML(url, data, div_class) {
-        $.ajax({
-            // headers: {
-            //     'Content-Type': 'application/json'
-            // },
-            type: 'POST',
-            url: url,
-            dataType: 'json',
-            data: data,
-            response: 'text',
-            success: function (data) {
-                $(div_class).html(data);
-                console.log('ajax', data);
-            }
-        })
-    }
-
-    insertHTML('controllers/Controls.php', {'type': 'GetControls'}, 'list-group-item');
-    document.getElementById('controls').innerHTML = `<li class="list-group-item">${data}</li>`;
-
-    // function insertHTML(url, data, div_class) {
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: url,
-    //         data: data,
-    //         response: 'text',
-    //         success: function (data) {
-    //             $(div_class).html(data);
-    //             $(div_class).hide().fadeIn(700);
-    //         }
-    //     })
-    // }
-
-    // function sendRequest(method, url, body = null) {
-    //     const headers = {
-    //         'Content-Type': 'application/json'
-    //     }
-    //
-    //     return fetch(url, {
-    //         method: method,
-    //         headers: headers,
-    //         body: JSON.stringify(body)
-    //     })
-    // }
-
-    // function sendRequestWithImage(url, body) {
-    //     return fetch(url, {
-    //         method: 'POST',
-    //         body: body
-    //     })
-    // }
-</script>
 </body>
 </html>

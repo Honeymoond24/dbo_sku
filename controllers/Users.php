@@ -91,6 +91,7 @@ class Users
         if ($this->userModel->findUserByEmail($data['usersEmail'])) {
             //User Found
             $loggedInUser = $this->userModel->login($data['usersEmail'], $data['usersPwd']);
+//            die(var_dump($loggedInUser));
             if ($loggedInUser) {
                 //Create session
                 $this->createUserSession($loggedInUser);
@@ -110,6 +111,18 @@ class Users
         $_SESSION['usersType'] = $user->usersType;
         $_SESSION['usersFullName'] = $user->fullName;
         $_SESSION['usersEmail'] = $user->usersEmail;
+        if ($_SESSION['usersType'] == 'student') {
+            $student = $this->userModel->findStudentByID($_SESSION['IDUser']);
+            $_SESSION['usersISC'] = $student->StudentCode;
+            $_SESSION['IDGroup'] = $student->IDGroup;
+            $_SESSION['GroupName'] = $student->GroupName;
+            $_SESSION['IDSpeciality'] = $student->IDSpeciality;
+            $_SESSION['SpecialityName'] = $student->SpecialityName;
+        } elseif (($_SESSION['usersType'] == 'teacher')) {
+            $teacher = $this->userModel->findTeacherByID($_SESSION['IDUser']);
+            $_SESSION['IDChair'] = $teacher->IDChair;
+            $_SESSION['ChairHead'] = $teacher->ChairHead;
+        }
         redirect("../index.php");
     }
 
@@ -138,7 +151,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         default:
             redirect("../index.php");
     }
-
 } else {
     switch ($_GET['q']) {
         case 'logout':

@@ -16,6 +16,59 @@ include_once 'header.php'
             <button type="button" class="btn btn-primary">Пройти экзамен</button>
         </div>
     </div>
+    <script>
+        function insertHTML(url, data, div_class) {
+            $.ajax({
+                // headers: {
+                //     'Content-Type': 'application/json'
+                // },
+                type: 'POST',
+                url: url,
+                dataType: 'json',
+                data: data,
+                response: 'text',
+                success: function (data) {
+                    $(div_class).html(data);
+                    console.log('ajax', data);
+                }
+            })
+        }
+
+        insertHTML('controllers/Controls.php', {'type': 'GetControls'}, 'list-group-item');
+        document.getElementById('controls').innerHTML = `<li class="list-group-item">${data}</li>`;
+
+        // function insertHTML(url, data, div_class) {
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: url,
+        //         data: data,
+        //         response: 'text',
+        //         success: function (data) {
+        //             $(div_class).html(data);
+        //             $(div_class).hide().fadeIn(700);
+        //         }
+        //     })
+        // }
+
+        // function sendRequest(method, url, body = null) {
+        //     const headers = {
+        //         'Content-Type': 'application/json'
+        //     }
+        //
+        //     return fetch(url, {
+        //         method: method,
+        //         headers: headers,
+        //         body: JSON.stringify(body)
+        //     })
+        // }
+
+        // function sendRequestWithImage(url, body) {
+        //     return fetch(url, {
+        //         method: 'POST',
+        //         body: body
+        //     })
+        // }
+    </script>
 <?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
     <div class="row">
         <ul class="list-group col-4">

@@ -27,6 +27,42 @@ class User
         }
     }
 
+    public function findStudentByID($IDUser)
+    {
+//        $this->db->query('SELECT * FROM `students` WHERE IDStudent = :IDUser');
+        $this->db->query('SELECT students.StudentCode, students.StudentFullName, 
+        students.IDGroup, groups.GroupName, groups.IDSpeciality, 
+        specialities.SpecialityName FROM students 
+        JOIN groups on students.IDGroup = groups.IDGroup 
+        JOIN specialities on groups.IDSpeciality = specialities.IDSpeciality 
+        WHERE students.IDStudent = :IDUser');
+        $this->db->bind(':IDUser', $IDUser);
+
+        $row = $this->db->single();
+
+        //Check row
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    public function findTeacherByID($IDUser)
+    {
+        $this->db->query('SELECT * FROM `teachers` WHERE IDTeacher = :IDUser');
+        $this->db->bind(':IDUser', $IDUser);
+
+        $row = $this->db->single();
+
+        //Check row
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
     //Register User
     public function register($data)
     {

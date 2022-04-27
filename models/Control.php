@@ -15,6 +15,7 @@ class Control
     // Find Controls By User ID
     public function findControlsByUid($usersId)
     {
+        if ($_SESSION['usersType'] != 'student') return false;
         $this->db->query('SELECT disciplines.DisciplineName, disciplines.IDDiscipline, 
        controlsforgroups.IDControlsForGroups FROM controlsforgroups 
     INNER JOIN controls on controlsforgroups.IDControl = controls.IDControl 
