@@ -6,6 +6,7 @@ include_once 'header.php';
             echo explode(" ", $_SESSION['usersFullName'])[1];
         } else {
             echo 'Гость';
+            echo phpinfo();
         }
         ?>
     </h1>
