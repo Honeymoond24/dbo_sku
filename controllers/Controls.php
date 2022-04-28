@@ -53,20 +53,15 @@ class Controls
 
     public function insertControl()
     {
-        $group = $_POST['group'];
-        $dsip = $_POST['dsip'];
-        $tickets = $_POST['tickets'];
-        $indicators = $_POST['indicators'];
         $data = $_POST;
-        echo $_POST['type'];
-        echo $_POST['tickets'][0];
-        var_dump($_POST);
+//        var_dump($_POST);
         $query = $this->controlModel->insertControl($data);
         if ($query) {
             echo 'Success! <br>';
             echo json_encode($query);
+            return $query;
         } else {
-            return false;
+            return $query;
         }
     }
 }
@@ -74,7 +69,7 @@ class Controls
 $init = new Controls;
 
 //Ensure that user is sending a post request
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION)) {
 //    $myPostData = json_decode(file_get_contents("php://input"), true);
 //    print_r($_POST);
 //    echo $_POST['type'];

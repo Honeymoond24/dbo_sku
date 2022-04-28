@@ -109,20 +109,35 @@ class Control
     public function insertControl($data)
     {
         $sql = 'INSERT INTO controls (IDDiscipline) VALUES (:IDDiscipline);';
-        $sql .= 'INSERT INTO controlsforgroups 
-            (IDGroup, IDTeacher, ControlDate, IDControl) 
-            VALUES ();';
-//            $this->db->query('INSERT INTO criteria
-//            (IDCriteria, IDControlsForGroups, criteria, maxScore) VALUES
-//            (NULL, )';
+        $sql .= 'INSERT INTO controlsforgroups
+            (IDGroup, IDTeacher, ControlDate, IDControl)
+            VALUES (:IDGroup, :IDTeacher, :ControlDate,
+                    (SELECT MAX(IDControl) FROM controls AS a));';
+        $sql .= 'INSERT INTO tickets
+            (IDControlsForGroups, ticketText) VALUES';
+        foreach ($data['tickets'] as $index => $ticketText) {
+            $sql .= "((SELECT MAX(IDControlsForGroups ) FROM controlsforgroups AS aa), '$ticketText')";
+            if ($index != count($data['tickets']) - 1) $sql .= ', ';
+        }
+        $sql .= ';';
+        $sql .= 'INSERT INTO criteria
+            (IDControlsForGroups, criteria, maxScore) VALUES';
+        foreach ($data['indicators'] as $index => $indicator) {
+            $sql .= "((SELECT MAX(IDControlsForGroups ) FROM controlsforgroups AS aa), 
+            '$indicator', '{$data['indicators_score'][$index]}')";
+            if ($index != count($data['indicators']) - 1) $sql .= ', ';
+        }
+        $sql .= ';';
         $this->db->query($sql);
-            $this->db->bind(':IDDiscipline', $data['dsip']);
-            $this->db->bind(':usersEmail', $tokenEmail);
-        $row = $this->db->resultSet();
+        $this->db->bind(':IDDiscipline', $data['dsip']);
+        $this->db->bind(':IDGroup', $data['group']);
+        $this->db->bind(':IDTeacher', $data['IDUser']);
+        $this->db->bind(':ControlDate', $data['datetimePicker']);
 
-        //Check row
-        if ($this->db->rowCount() > 0) {
-            return $row;
+        //Execute
+        if ($this->db->execute()) {
+            return $sql;
+            //            return true;
         } else {
             return false;
         }
