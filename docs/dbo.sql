@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Апр 27 2022 г., 10:01
+-- Время создания: Апр 28 2022 г., 20:17
 -- Версия сервера: 10.5.11-MariaDB
 -- Версия PHP: 8.1.1
 
@@ -67,8 +67,8 @@ CREATE TABLE `controlanswers` (
 CREATE TABLE `controls` (
   `IDControl` int(11) NOT NULL,
   `IDDiscipline` int(11) NOT NULL,
-  `IDControlType` int(11) NOT NULL,
-  `SemesterNum` tinyint(3) UNSIGNED NOT NULL
+  `IDControlType` int(11) DEFAULT 1,
+  `SemesterNum` tinyint(3) UNSIGNED DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `controlsforgroups` (
   `IDControlsForGroups` int(11) NOT NULL,
   `IDGroup` int(11) DEFAULT NULL,
   `IDTeacher` int(11) DEFAULT NULL,
-  `ControlDate` datetime DEFAULT NULL,
+  `ControlDate` datetime DEFAULT current_timestamp(),
   `IDControl` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -133,7 +133,7 @@ INSERT INTO `controltypes` (`IDControlType`, `ControlTypeName`, `ControlTypeName
 
 CREATE TABLE `criteria` (
   `IDCriteria` int(11) NOT NULL,
-  `IDDiscipline` int(11) DEFAULT NULL,
+  `IDControlsForGroups` int(11) DEFAULT NULL,
   `criteria` text DEFAULT NULL,
   `maxScore` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -202,7 +202,7 @@ CREATE TABLE `groups` (
   `IDSpeciality` int(11) NOT NULL,
   `GroupNameKZ` varchar(20) DEFAULT NULL,
   `GroupNameENG` varchar(20) DEFAULT NULL,
-  `okDeleted` tinyint(1) NOT NULL
+  `okDeleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -210,7 +210,8 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`IDGroup`, `GroupName`, `IDSpeciality`, `GroupNameKZ`, `GroupNameENG`, `okDeleted`) VALUES
-(1, 'АПО-19', 1, 'АПО-19', 'APO-19', 0);
+(1, 'АПО-19', 1, 'АПО-19', 'APO-19', 0),
+(2, 'АПО-20', 1, 'АПО-20', 'APO-20', 0);
 
 -- --------------------------------------------------------
 
@@ -292,10 +293,11 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`IDStudent`, `StudentCode`, `StudentSurName`, `StudentFirstName`, `StudentPatronymic`, `IDGroup`, `IDStudentStatus`, `NameShort`, `StudentFullName`, `Email`) VALUES
-(5, '10620287', 'Долгушин', 'Никон', 'Львович', 1, 1, 'Никон', 'Долгушин Никон Львович', 'nikon@gmail.com'),
-(6, NULL, 'Семейников', 'Артем', 'Николаевич', 1, NULL, 'Семейников', 'Семейников Артем Николаевич', 'artem@gmail.com'),
+(5, '10620287', 'usersName1', 'usersName2', 'usersName3', 1, 1, 'Никон', 'Долгушин Никон Львович', 'nikon@gmail.com'),
+(6, '12620287', 'usersName1', 'usersName2', 'usersName3', 1, NULL, 'Семейников', 'Семейников Артем Николаевич', 'artem@gmail.com'),
 (7, NULL, 'Одарич', 'Константин', 'Николаевич', 1, NULL, 'Одарич', 'Одарич Константин Николаевич', 'kostya@gmail.com'),
-(8, NULL, 'Тарасюк', 'Андрей', 'Вячеславович', 1, NULL, 'Тарасюк', 'Тарасюк Андрей Вячеславович', 'andrey@gmail.com');
+(8, NULL, 'Тарасюк', 'Андрей', 'Вячеславович', 1, NULL, 'Тарасюк', 'Тарасюк Андрей Вячеславович', 'andrey@gmail.com'),
+(9, NULL, 'Админов', 'Админ', 'Админович', NULL, NULL, 'Админов', 'Админов Админ Админович', 'admin@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -305,12 +307,12 @@ INSERT INTO `students` (`IDStudent`, `StudentCode`, `StudentSurName`, `StudentFi
 
 CREATE TABLE `teachers` (
   `IDTeacher` int(11) NOT NULL,
-  `IDChair` int(11) NOT NULL,
+  `IDChair` int(11) DEFAULT NULL,
   `TeacherSurname` varchar(50) NOT NULL,
   `TeacherFirstName` varchar(50) DEFAULT NULL,
   `TeacherPatronymic` varchar(50) DEFAULT NULL,
   `ChairHead` tinyint(1) DEFAULT 0,
-  `okDeleted` tinyint(1) NOT NULL
+  `okDeleted` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -318,8 +320,8 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`IDTeacher`, `IDChair`, `TeacherSurname`, `TeacherFirstName`, `TeacherPatronymic`, `ChairHead`, `okDeleted`) VALUES
-(3, 1, 'Пяткова', 'Татьяна', 'Владимировна', 0, 0),
-(4, 1, 'Кухаренко', 'Евгения', 'Владимировна', 0, 0);
+(1, 1, 'Пяткова', 'Татьяна', 'Владимировна', 0, 0),
+(2, 1, 'Кухаренко', 'Евгения', 'Владимировна', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -328,7 +330,7 @@ INSERT INTO `teachers` (`IDTeacher`, `IDChair`, `TeacherSurname`, `TeacherFirstN
 --
 
 CREATE TABLE `tickets` (
-  `IDDiscipline` int(11) DEFAULT NULL,
+  `IDControlsForGroups` int(11) DEFAULT NULL,
   `IDTicket` int(11) NOT NULL,
   `ticketText` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -357,16 +359,13 @@ INSERT INTO `users` (`id`, `IDUser`, `usersType`, `fullName`, `usersEmail`, `use
 (2, 2, 'student', 'Петров Петр Петрович', 'petrov1@gmail.com', '$2y$10$b3NsH5BRACGAjpaSK/MwJOKjCJL2fHn1FFpubdJrdPqjJofzpB6/K'),
 (3, 3, 'student', 'Иванов Иван Иванович', 'ivan2@gmail.com', '$2y$10$OF.zBmyj9k42qKmZ7nZqBOezHHnPXKlIP4twOcBvGTCm7mn5I6V7.'),
 (4, 4, 'student', 'adssdf asdffs2 ads3dd3', 'qazwsx@qaz.we', '$2y$10$A9W3WTsqcrcAD1TR.xijfers9ZUGChlyQKqq4uKWvhIyw/2M1lCvC'),
-(5, 1, 'teacher', 'Иванов Иван Иванович', 'zdaniyalr1@gmail.com', '$2y$10$a/18I5EB6WeT3SHcQY6Zlex1P28KWm/xZ6hicsLfwZ8Z035P5.TW6'),
-(6, 2, 'teacher', 'Преподов Алексей Алексеевич', 'alex1@gmail.com', '$2y$10$eX6dZRKr75oj/HHOJC85WezOFgeMftBy5i1XRp5voWKgZmnSFyhRe'),
-(7, 3, 'head_teacher', 'Кухаренко Евгений Владимировна', 'kev@gmai.com', '$2y$10$Vr5uKILR0VO1CpprS9dY0O4YrHVGsF7WQcxZxevuSExIWtXDOP2Cq'),
 (8, 5, 'student', 'Долгушин Никон Львович', 'nikon@gmail.com', '$2y$10$IWv7hyeTZ5d23LPDnPnobuWTpZyY7KSKUsIvocNyqcWw7lC49sUzy'),
-(9, 4, 'teacher', 'Пяткова Татьяна Владимировна', 'tpv@gmail.com', '$2y$10$m4oCy2nS6K8.N3tlyblg6.7SO1.vOmCoNScTfKdjctoRExgbSAH6m'),
-(10, 5, 'teacher', 'qwer wer ert', 'qwe@qwe.qw', '$2y$10$icxOtgdFlpguay1ocbAavObm8wPKL7jkEaksw5s2wCPadbZyYhwSK'),
-(11, 4, 'head_teacher', 'qwer wer ert', 'qwer@qwe.qw', '$2y$10$9XSnAl9I/j3Xg9eBd2g4dubjCl5f9uJe9Lk0/TmZmcO6SVMhu93Ku'),
 (14, 6, 'student', 'Семейников Артем Николаевич', 'artem@gmail.com', '$2y$10$geFJjZiKEZ9Ztp2CLyVLOOW25RF0qYkqLmTFeUcrYoOoroDymN2bu'),
 (15, 7, 'student', 'Одарич Константин Николаевич', 'kostya@gmail.com', '$2y$10$3ELgQG5BA7WiuSs/q3gyn.mV9UzoD4UUiucaRdV/nYGP3TByfsUri'),
-(16, 8, 'student', 'Тарасюк Андрей Вячеславович', 'andrey@gmail.com', '$2y$10$12wRm8nQxwYfbwQUS9IuXehsv/lCJNhKiXJQx8aN28DyaRYDaVioe');
+(16, 8, 'student', 'Тарасюк Андрей Вячеславович', 'andrey@gmail.com', '$2y$10$12wRm8nQxwYfbwQUS9IuXehsv/lCJNhKiXJQx8aN28DyaRYDaVioe'),
+(17, 9, 'admin', 'Админов Админ Админович', 'admin@gmail.com', '$2y$10$jdR9jjCShwL0HHX2Z91.VewPITS8R9tKhoiImMx09CFrR/9wNQh2m'),
+(26, 1, 'teacher', 'Пяткова Татьяна Владимировна', 'tpv@gmail.com', '$2y$10$vH51enFm1p5vhZ747RxfdeS1oX4N/qEidpZ8W0oXXsEXZLBd6Fixe'),
+(27, 2, 'head_teacher', 'Кухаренко Евгения Владимировна', 'geny@gmail.com', '$2y$10$ILUJfUsO453rC6O9lcxf4.Jo6DWqIs6pimfaN4CHTfy6h1QZ.YlrC');
 
 --
 -- Индексы сохранённых таблиц
@@ -524,7 +523,7 @@ ALTER TABLE `faculties`
 -- AUTO_INCREMENT для таблицы `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `IDGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `IDGroup` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `notes`
@@ -548,13 +547,7 @@ ALTER TABLE `studentaccess`
 -- AUTO_INCREMENT для таблицы `students`
 --
 ALTER TABLE `students`
-  MODIFY `IDStudent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT для таблицы `teachers`
---
-ALTER TABLE `teachers`
-  MODIFY `IDTeacher` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDStudent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `tickets`
@@ -566,7 +559,7 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -59,12 +59,20 @@ include_once 'header.php';
                     </select>
                 </div>
                 <div class="group form-group">
-                    <label class="form-label" for="datetimepicker1Input">Дата и время экзамена</label>
-                    <input class="flatpickr flatpickr-input active" type="text" placeholder="Выберите дату экзамена" data-id="datetime" readonly="readonly">
+                    <label class="form-label" for="datetimePicker">Дата и время экзамена</label>
+                    <input class="flatpickr flatpickr-input active" id="datetimePicker" type="text"
+                           placeholder="Выберите дату экзамена" data-id="datetime" readonly="readonly">
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+                <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
                 <script>
-                    flatpickr("#myID", {});
+                    flatpickr("#datetimePicker",
+                        {
+                            enableTime: true,
+                            dateFormat: "Y-m-d H:i:00",
+                            "locale": "ru",
+                            minDate: "today",
+                        });
                 </script>
                 <div class="tickets row">
                     <label for="inputTickets" class="col-sm-9 col-form-label">Билеты</label>
