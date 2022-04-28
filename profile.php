@@ -115,6 +115,58 @@ include_once 'helpers/session_helper.php';
             </div>
         </form>
     <?php endif; ?>
+<?php elseif (isset($_SESSION['IDUser']) and
+    ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
+    <?php
+    $action = isset($_GET['action']) ? $_GET['action'] : 'null';
+    if ($action != 'edit'): ?>
+        <div class="row gutters-sm col-md-12 card mb-3 card-body">
+            <div class="row pb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Полное имя</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <?= $_SESSION['usersFullName'] ?>
+                </div>
+            </div>
+            <hr>
+            <div class="row pb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Электронный адрес</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <?= $_SESSION['usersEmail'] ?>
+                </div>
+            </div>
+            <hr>
+            <div class="row pb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Кафедра</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <?= $_SESSION['ChairFullName'] ?>
+                </div>
+            </div>
+            <hr>
+            <div class="row pb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Факультет</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <?= $_SESSION['FacultyFullName'] ?>
+                </div>
+            </div>
+            <hr>
+            <div class="row pb-3">
+                <div class="col-sm-3">
+                    <h6 class="mb-0">Завкафедрой</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <?= $_SESSION['ChairHead'] ? 'Да' : 'Нет' ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
 <?php else: ?>
     <?php redirect("../index.php"); ?>
 <?php endif; ?>

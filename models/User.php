@@ -50,7 +50,12 @@ class User
 
     public function findTeacherByID($IDUser)
     {
-        $this->db->query('SELECT * FROM `teachers` WHERE IDTeacher = :IDUser');
+        $this->db->query('SELECT IDTeacher, teachers.IDChair, TeacherSurname, TeacherFirstName, TeacherPatronymic, 
+        ChairHead, ChairFullName, ChairShortName, chairs.IDFaculty, FacultyFullName, FacultyShortName
+	    FROM teachers 
+	    JOIN chairs on teachers.IDChair = chairs.IDChair 
+	    JOIN faculties on chairs.IDFaculty = faculties.IDFaculty
+        WHERE IDTeacher = :IDUser');
         $this->db->bind(':IDUser', $IDUser);
 
         $row = $this->db->single();
@@ -68,17 +73,27 @@ class User
     {
 //        $this->db->query('INSERT INTO users (usersName, usersEmail, usersPwd)
 //        VALUES (:name, :email, :Uid, :password)');
-        $query = 'INSERT INTO `users` (`IDUser`, `usersType`, `fullName`, `usersEmail`, `usersPwd`) 
+        if ($data['usersType'] == 'student') {
+            $query = 'INSERT INTO `users` (`IDUser`, `usersType`, `fullName`, `usersEmail`, `usersPwd`) 
         VALUES ((SELECT IF(
         (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` WHERE `usersType` = :usersType) AS max_uid) IS NULL, 
         1, (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` WHERE `usersType` = :usersType) AS max_uid) + 1)), 
         :usersType, :fullName, :usersEmail, :usersPwd);';
+        } else {
+            $query = 'INSERT INTO `users` (`IDUser`, `usersType`, `fullName`, `usersEmail`, `usersPwd`) 
+        VALUES ((SELECT IF(
+        (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` 
+        WHERE `usersType` = \'teacher\' OR `usersType` = \'head_teacher\') AS max_uid) IS NULL, 
+        1, (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` 
+        WHERE `usersType` = \'teacher\' OR `usersType` = \'head_teacher\') AS max_uid) + 1)), 
+        :usersType, :fullName, :usersEmail, :usersPwd);';
+        }
         if ($data['usersType'] != 'student') {
-            $usersType = ($data['usersType'] == 'teacher') ? 0 : 1;
+            $usersType = ($data['usersType'] == 'head_teacher') ? 1 : 0;
             $query = $query . 'INSERT INTO `teachers` (`IDTeacher`,`TeacherSurname`, `TeacherFirstName`, 
-        `TeacherPatronymic`, `ChairHead`, `okDeleted`) VALUES (
-        (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` WHERE `usersType` = :usersType) AS max_uid) + 1, 
-        :usersName1, :usersName2, :usersName3, \'' . $usersType . '\', \'0\');';
+        `TeacherPatronymic`, `ChairHead`) VALUES (
+        (SELECT MAX(`IDUser`) FROM (SELECT `IDUser` FROM `users` WHERE `usersType` = :usersType) AS max_uid), 
+        :usersName1, :usersName2, :usersName3, :ChairHead);';
         } else {
             $query = $query . 'INSERT INTO `students` 
         (`StudentSurName`, `StudentFirstName`, `StudentPatronymic`, `NameShort`, `StudentFullName`, `Email`) 
@@ -86,6 +101,8 @@ class User
         }
         $this->db->query($query);
         //Bind values
+        if ($data['usersType'] != 'student')
+            $this->db->bind(':ChairHead', $usersType);
         $this->db->bind(':usersType', $data['usersType']);
         $this->db->bind(':fullName',
             $data['usersName1'] . ' ' . $data['usersName2'] . ' ' . $data['usersName3']);

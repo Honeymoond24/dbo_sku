@@ -118,9 +118,14 @@ class Users
             $_SESSION['GroupName'] = $student->GroupName;
             $_SESSION['IDSpeciality'] = $student->IDSpeciality;
             $_SESSION['SpecialityName'] = $student->SpecialityName;
-        } elseif (($_SESSION['usersType'] == 'teacher')) {
+        } elseif ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher') {
             $teacher = $this->userModel->findTeacherByID($_SESSION['IDUser']);
             $_SESSION['IDChair'] = $teacher->IDChair;
+            $_SESSION['ChairFullName'] = $teacher->ChairFullName;
+            $_SESSION['ChairShortName'] = $teacher->ChairShortName;
+            $_SESSION['FacultyFullName'] = $teacher->FacultyFullName;
+            $_SESSION['FacultyShortName'] = $teacher->FacultyShortName;
+            $_SESSION['IDFaculty'] = $teacher->IDFaculty;
             $_SESSION['ChairHead'] = $teacher->ChairHead;
         }
         redirect("../index.php");
