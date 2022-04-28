@@ -74,6 +74,23 @@ class Control
         }
     }
 
+    public function findControlsByIDChair($IDChair)
+    {
+        $this->db->query('SELECT * FROM controlsforgroups 
+        JOIN controls on controlsforgroups.IDControl = controls.IDControl
+        JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline
+        JOIN groups on groups.IDGroup = controlsforgroups.IDGroup
+        JOIN teachers on teachers.IDTeacher = controlsforgroups.IDTeacher
+        WHERE disciplines.IDChair = :IDChair;');
+        $this->db->bind(':IDChair', $IDChair);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
     public function findControlsByIDChairTeacherSelect($IDChair)
     {
         $this->db->query('SELECT * FROM disciplines WHERE disciplines.IDChair = :IDChair;');
@@ -138,6 +155,56 @@ class Control
         if ($this->db->execute()) {
             return $sql;
             //            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function DeleteControl($data)
+    {
+        $sql = 'DELETE FROM controlsforgroups WHERE IDControlsForGroups = :IDControlsForGroups;';
+        $this->db->query($sql);
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function ControlForGroupsApprove($data)
+    {
+        $sql = 'UPDATE controlsforgroups SET Approve = 1 WHERE IDControlsForGroups = :IDControlsForGroups;';
+        $this->db->query($sql);
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function GetCriteria($data)
+    {
+        $this->db->query('SELECT * FROM criteria
+	        WHERE IDControlsForGroups = :IDControlsForGroups;');
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    public function GetTickets($data)
+    {
+        $this->db->query('SELECT * FROM tickets
+	        WHERE IDControlsForGroups = :IDControlsForGroups;');
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
         } else {
             return false;
         }

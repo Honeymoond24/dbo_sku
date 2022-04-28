@@ -31,6 +31,16 @@ class Controls
         }
     }
 
+    public function GetControlsToApprove()
+    {
+        $controls = $this->controlModel->findControlsByIDChair($_SESSION['IDChair']);
+        if ($controls) {
+            echo json_encode($controls);
+        } else {
+            return false;
+        }
+    }
+
     public function GetControlsSelectTeacher()
     {
         $controls = $this->controlModel->findControlsByIDChairTeacherSelect($_SESSION['IDChair']);
@@ -54,14 +64,59 @@ class Controls
     public function insertControl()
     {
         $data = $_POST;
-//        var_dump($_POST);
         $query = $this->controlModel->insertControl($data);
         if ($query) {
-            echo 'Success! <br>';
             echo json_encode($query);
-            return $query;
         } else {
-            return $query;
+            return false;
+        }
+    }
+
+    public function DeleteControl()
+    {
+        if ($_SESSION['usersType'] != 'head_teacher') return false;
+        $data = $_GET;
+        $query = $this->controlModel->DeleteControl($data);
+        if ($query) {
+            echo json_encode($query);
+        } else {
+            return false;
+        }
+    }
+
+    public function ControlForGroupsApprove()
+    {
+        if ($_SESSION['usersType'] != 'head_teacher') return false;
+        $data = $_GET;
+        $query = $this->controlModel->ControlForGroupsApprove($data);
+        if ($query) {
+            echo json_encode($query);
+        } else {
+            return false;
+        }
+    }
+
+    public function GetCriteria()
+    {
+        if ($_SESSION['usersType'] != 'head_teacher') return false;
+        $data = $_POST;
+        $query = $this->controlModel->GetCriteria($data);
+        if ($query) {
+            echo json_encode($query);
+        } else {
+            return 'Критерии не указаны';
+        }
+    }
+
+    public function GetTickets()
+    {
+        if ($_SESSION['usersType'] != 'head_teacher') return false;
+        $data = $_POST;
+        $query = $this->controlModel->GetTickets($data);
+        if ($query) {
+            echo json_encode($query);
+        } else {
+            return 'Билеты не указаны';
         }
     }
 }
@@ -89,17 +144,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION)) {
         case 'GetControlsStudent':
             $init->GetControlsStudent();
             break;
+        case 'GetControlsToApprove':
+            $init->GetControlsToApprove();
+            break;
+        case 'GetCriteria':
+            $init->GetCriteria();
+            break;
+        case 'GetTickets':
+            $init->GetTickets();
+            break;
 //        default:
 //            redirect("../index.php");
     }
 }
-//else {
-//    switch ($_GET['q']) {
-//        case 'logout':
-////            $init->logout();
+else {
+    switch ($_GET['action']) {
+        case 'DeleteControl':
+            $init->DeleteControl();
+            redirect("../controls_approve.php");
+            break;
+        case 'ControlForGroupsApprove':
+            $init->ControlForGroupsApprove();
+            redirect("../controls_approve.php");
+            break;
+//        case 'GetControl':
+//            $init->GetControl();
+//            redirect("../controls_approve.php");
 //            break;
 //        default:
 //            redirect("../index.php");
-//    }
-//}
+    }
+}
 

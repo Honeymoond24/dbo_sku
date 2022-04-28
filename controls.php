@@ -1,6 +1,6 @@
 <?php
 include_once 'header.php';
-// require_once './controllers/Controls.php';
+include_once './helpers/session_helper.php';
 ?>
 
 <?php if (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student') : ?>
