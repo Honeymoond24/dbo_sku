@@ -22,8 +22,35 @@ class Control
         INNER JOIN groups on groups.IDGroup = controlsforgroups.IDGroup 
         INNER JOIN students on students.IDGroup = groups.IDGroup 
         INNER JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline 
-        WHERE students.IDGroup = controlsforgroups.IDGroup AND students.IDStudent = :usersId;');
+        WHERE students.IDGroup = controlsforgroups.IDGroup AND students.IDStudent = :usersId 
+        AND controlsforgroups.Approve = 1;');
         $this->db->bind(':usersId', $usersId);
+
+        $row = $this->db->resultSet();
+
+        //Check row
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    // Find Controls By User ID
+    public function findControlByIDStudent($usersId, $IDControlsForGroups)
+    {
+        if ($_SESSION['usersType'] != 'student') return false;
+        $this->db->query('SELECT disciplines.DisciplineName, disciplines.IDDiscipline, 
+        controlsforgroups.IDControlsForGroups FROM controlsforgroups 
+        INNER JOIN controls on controlsforgroups.IDControl = controls.IDControl 
+        INNER JOIN groups on groups.IDGroup = controlsforgroups.IDGroup 
+        INNER JOIN students on students.IDGroup = groups.IDGroup 
+        INNER JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline 
+        WHERE students.IDGroup = controlsforgroups.IDGroup AND students.IDStudent = :usersId 
+          AND controlsforgroups.Approve = 1 
+          AND controlsforgroups.IDControlsForGroups  = :IDControlsForGroups;');
+        $this->db->bind(':usersId', $usersId);
+        $this->db->bind(':IDControlsForGroups', $IDControlsForGroups);
 
         $row = $this->db->resultSet();
 

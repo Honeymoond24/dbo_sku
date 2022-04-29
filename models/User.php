@@ -32,9 +32,11 @@ class User
 //        $this->db->query('SELECT * FROM `students` WHERE IDStudent = :IDUser');
         $this->db->query('SELECT students.StudentCode, students.StudentFullName, 
         students.IDGroup, groups.GroupName, groups.IDSpeciality, 
-        specialities.SpecialityName FROM students 
+        specialities.SpecialityName, chairs.IDChair, 
+        chairs.ChairFullName, chairs.ChairShortName, chairs.IDFaculty FROM students 
         JOIN groups on students.IDGroup = groups.IDGroup 
         JOIN specialities on groups.IDSpeciality = specialities.IDSpeciality 
+        JOIN chairs on chairs.IDChair = specialities.IDChair 
         WHERE students.IDStudent = :IDUser');
         $this->db->bind(':IDUser', $IDUser);
 

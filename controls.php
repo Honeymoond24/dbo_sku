@@ -6,11 +6,11 @@ include_once './helpers/session_helper.php';
 <?php if (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student') : ?>
     <h5>Список назначенных экзаменов</h5>
     <div class="row">
-        <ul class="list-group p0 col-4" id="controls"></ul>
-        <div class="main card col-8 p-2 ml-2">
-            <form action=""></form>
-            <button type="button" class="btn btn-primary">Пройти экзамен</button>
-        </div>
+        <ul class="list-group p0 col-12" id="controls"></ul>
+<!--        <div class="main card col-8 p-2 ml-2">-->
+<!--            <form action=""></form>-->
+<!--            <button type="button" class="btn btn-primary">Пройти экзамен</button>-->
+<!--        </div>-->
     </div>
     <script>
         let data = [];
@@ -30,7 +30,10 @@ include_once './helpers/session_helper.php';
                     $(div_class).html(_data);
                     console.log('ajax', _data);
                     data.forEach(el => {
-                        document.getElementById('controls').innerHTML += `<li class="list-group-item">${el['DisciplineName']}</li>`;
+                        document.getElementById('controls').innerHTML += `
+                        <li class="list-group-item">
+                            <a href="control_pass.php?IDControlsForGroups=${el['IDControlsForGroups']}">${el['DisciplineName']}</a>
+                        </li>`;
                     })
                 }
             })
