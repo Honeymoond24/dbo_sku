@@ -106,25 +106,25 @@ class Control
         }
     }
 
-    public function insertControl($data)
-    {
-        $sql = 'INSERT INTO controls (IDDiscipline) VALUES (:IDDiscipline);';
-        $sql .= 'INSERT INTO controlsforgroups 
-            (IDGroup, IDTeacher, ControlDate, IDControl) 
-            VALUES ();';
-//            $this->db->query('INSERT INTO criteria
-//            (IDCriteria, IDControlsForGroups, criteria, maxScore) VALUES
-//            (NULL, )';
-        $this->db->query($sql);
-            $this->db->bind(':IDDiscipline', $data['dsip']);
-            $this->db->bind(':usersEmail', $tokenEmail);
-        $row = $this->db->resultSet();
+//     public function insertControl($data)
+//     {
+//         $sql = 'INSERT INTO controls (IDDiscipline) VALUES (:IDDiscipline);';
+//         $sql .= 'INSERT INTO controlsforgroups 
+//             (IDGroup, IDTeacher, ControlDate, IDControl) 
+//             VALUES ();';
+// //            $this->db->query('INSERT INTO criteria
+// //            (IDCriteria, IDControlsForGroups, criteria, maxScore) VALUES
+// //            (NULL, )';
+//         $this->db->query($sql);
+//             $this->db->bind(':IDDiscipline', $data['dsip']);
+//             $this->db->bind(':usersEmail', $tokenEmail);
+//         $row = $this->db->resultSet();
 
-        //Check row
-        if ($this->db->rowCount() > 0) {
-            return $row;
-        } else {
-            return false;
-        }
-    }
+//         //Check row
+//         if ($this->db->rowCount() > 0) {
+//             return $row;
+//         } else {
+//             return false;
+//         }
+//     }
 }

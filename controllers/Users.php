@@ -105,6 +105,7 @@ class Users
         }
     }
 
+    
     public function createUserSession($user)
     {
         $_SESSION['IDUser'] = $user->IDUser;
