@@ -209,4 +209,34 @@ class Control
             return false;
         }
     }
+
+    public function findControlsByIDChair($IDChair)
+    {
+        $this->db->query('SELECT * FROM controlsforgroups 
+        JOIN controls on controlsforgroups.IDControl = controls.IDControl
+        JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline
+        JOIN groups on groups.IDGroup = controlsforgroups.IDGroup
+        JOIN teachers on teachers.IDTeacher = controlsforgroups.IDTeacher
+        WHERE disciplines.IDChair = :IDChair;');
+        $this->db->bind(':IDChair', $IDChair);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    public function findIDControlsForGroups($IDControlsForGroups, $IDStudent)
+    {
+        $this->db->query('SELECT * FROM controlanswers WHERE IDControlsForGroups = :IDControlsForGroups AND IDStudent = :IDStudent;');
+        $this->db->bind(':IDControlsForGroups', $IDControlsForGroups);
+        $this->db->bind(':IDStudent', $IDStudent);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
 }

@@ -6,3 +6,8 @@
     width: 69px;
     height: 60px;
 }
+
+.send_rating
+{
+    display: grid;
+}
