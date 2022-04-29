@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Апр 28 2022 г., 20:17
+-- Время создания: Апр 29 2022 г., 00:07
 -- Версия сервера: 10.5.11-MariaDB
 -- Версия PHP: 8.1.1
 
@@ -79,7 +79,15 @@ INSERT INTO `controls` (`IDControl`, `IDDiscipline`, `IDControlType`, `SemesterN
 (1, 1, 1, 6),
 (2, 2, 1, 6),
 (3, 3, 1, 6),
-(4, 4, 1, 6);
+(4, 4, 1, 6),
+(5, 1, 1, 0),
+(6, 1, 1, 0),
+(7, 1, 1, 0),
+(8, 1, 1, 0),
+(9, 1, 1, 0),
+(10, 1, 1, 0),
+(11, 3, 1, 0),
+(12, 2, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -92,18 +100,27 @@ CREATE TABLE `controlsforgroups` (
   `IDGroup` int(11) DEFAULT NULL,
   `IDTeacher` int(11) DEFAULT NULL,
   `ControlDate` datetime DEFAULT current_timestamp(),
-  `IDControl` int(11) NOT NULL
+  `IDControl` int(11) NOT NULL,
+  `Approve` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `controlsforgroups`
 --
 
-INSERT INTO `controlsforgroups` (`IDControlsForGroups`, `IDGroup`, `IDTeacher`, `ControlDate`, `IDControl`) VALUES
-(1, 1, 3, '2022-04-18 00:00:00', 1),
-(2, 1, 1, '2022-05-11 00:00:00', 2),
-(3, 1, 1, '2022-05-11 00:00:00', 3),
-(4, 1, 1, '2022-05-11 00:00:00', 4);
+INSERT INTO `controlsforgroups` (`IDControlsForGroups`, `IDGroup`, `IDTeacher`, `ControlDate`, `IDControl`, `Approve`) VALUES
+(1, 1, 3, '2022-04-18 00:00:00', 1, 0),
+(2, 1, 1, '2022-05-11 00:00:00', 2, 0),
+(3, 1, 1, '2022-05-11 00:00:00', 3, 0),
+(4, 1, 1, '2022-05-11 00:00:00', 4, 0),
+(5, 1, 1, '2022-04-30 13:20:00', 5, 0),
+(6, 1, 1, '2022-04-30 13:20:00', 6, 0),
+(7, 1, 1, '2022-04-30 13:20:00', 7, 0),
+(8, 1, 1, '2022-04-30 13:20:00', 8, 0),
+(9, 1, 1, '2022-04-30 13:20:00', 9, 0),
+(10, 1, 1, '2022-04-30 13:20:00', 10, 0),
+(11, 2, 1, '2022-04-30 13:20:00', 11, 0),
+(12, 1, 2, '2022-04-30 12:55:00', 12, 0);
 
 -- --------------------------------------------------------
 
@@ -137,6 +154,19 @@ CREATE TABLE `criteria` (
   `criteria` text DEFAULT NULL,
   `maxScore` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `criteria`
+--
+
+INSERT INTO `criteria` (`IDCriteria`, `IDControlsForGroups`, `criteria`, `maxScore`) VALUES
+(1, 10, 'Критерий 1', 20),
+(2, 10, 'Критерий 2', 30),
+(3, 10, 'Критерий 3', 30),
+(4, 11, 'Критерий 1', 20),
+(5, 11, 'Критерий 2', 30),
+(6, 11, 'Критерий 3', 30),
+(7, 12, 'Критерий 1', 100);
 
 -- --------------------------------------------------------
 
@@ -321,7 +351,20 @@ CREATE TABLE `teachers` (
 
 INSERT INTO `teachers` (`IDTeacher`, `IDChair`, `TeacherSurname`, `TeacherFirstName`, `TeacherPatronymic`, `ChairHead`, `okDeleted`) VALUES
 (1, 1, 'Пяткова', 'Татьяна', 'Владимировна', 0, 0),
-(2, 1, 'Кухаренко', 'Евгения', 'Владимировна', 1, 0);
+(2, 1, 'Кухаренко', 'Евгения', 'Владимировна', 1, 0),
+(3, NULL, 'Ушакова', 'Екатерина', 'Вячеславовна', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `test`
+--
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL,
+  `text` text DEFAULT NULL,
+  `num` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -330,10 +373,23 @@ INSERT INTO `teachers` (`IDTeacher`, `IDChair`, `TeacherSurname`, `TeacherFirstN
 --
 
 CREATE TABLE `tickets` (
-  `IDControlsForGroups` int(11) DEFAULT NULL,
   `IDTicket` int(11) NOT NULL,
+  `IDControlsForGroups` int(11) DEFAULT NULL,
   `ticketText` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `tickets`
+--
+
+INSERT INTO `tickets` (`IDTicket`, `IDControlsForGroups`, `ticketText`) VALUES
+(1, 10, 'Билет 1'),
+(2, 10, 'Билет 2'),
+(3, 10, 'Билет 3'),
+(4, 11, 'Билет 1'),
+(5, 11, 'Билет 2'),
+(6, 11, 'Билет 3'),
+(7, 12, 'Билет 1');
 
 -- --------------------------------------------------------
 
@@ -365,7 +421,8 @@ INSERT INTO `users` (`id`, `IDUser`, `usersType`, `fullName`, `usersEmail`, `use
 (16, 8, 'student', 'Тарасюк Андрей Вячеславович', 'andrey@gmail.com', '$2y$10$12wRm8nQxwYfbwQUS9IuXehsv/lCJNhKiXJQx8aN28DyaRYDaVioe'),
 (17, 9, 'admin', 'Админов Админ Админович', 'admin@gmail.com', '$2y$10$jdR9jjCShwL0HHX2Z91.VewPITS8R9tKhoiImMx09CFrR/9wNQh2m'),
 (26, 1, 'teacher', 'Пяткова Татьяна Владимировна', 'tpv@gmail.com', '$2y$10$vH51enFm1p5vhZ747RxfdeS1oX4N/qEidpZ8W0oXXsEXZLBd6Fixe'),
-(27, 2, 'head_teacher', 'Кухаренко Евгения Владимировна', 'geny@gmail.com', '$2y$10$ILUJfUsO453rC6O9lcxf4.Jo6DWqIs6pimfaN4CHTfy6h1QZ.YlrC');
+(27, 2, 'head_teacher', 'Кухаренко Евгения Владимировна', 'geny@gmail.com', '$2y$10$ILUJfUsO453rC6O9lcxf4.Jo6DWqIs6pimfaN4CHTfy6h1QZ.YlrC'),
+(28, 3, 'teacher', 'Ушакова Екатерина Вячеславовна', 'uev@gmail.com', '$2y$10$BRfapMw2c3s6fwaY07NBwOijv7LrVovZRlpEJnoUAd4zytBUc3Ufy');
 
 --
 -- Индексы сохранённых таблиц
@@ -456,6 +513,12 @@ ALTER TABLE `teachers`
   ADD PRIMARY KEY (`IDTeacher`);
 
 --
+-- Индексы таблицы `test`
+--
+ALTER TABLE `test`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `tickets`
 --
 ALTER TABLE `tickets`
@@ -487,13 +550,13 @@ ALTER TABLE `controlanswers`
 -- AUTO_INCREMENT для таблицы `controls`
 --
 ALTER TABLE `controls`
-  MODIFY `IDControl` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDControl` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `controlsforgroups`
 --
 ALTER TABLE `controlsforgroups`
-  MODIFY `IDControlsForGroups` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `IDControlsForGroups` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `controltypes`
@@ -505,7 +568,7 @@ ALTER TABLE `controltypes`
 -- AUTO_INCREMENT для таблицы `criteria`
 --
 ALTER TABLE `criteria`
-  MODIFY `IDCriteria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDCriteria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `disciplines`
@@ -550,16 +613,22 @@ ALTER TABLE `students`
   MODIFY `IDStudent` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT для таблицы `test`
+--
+ALTER TABLE `test`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `IDTicket` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IDTicket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

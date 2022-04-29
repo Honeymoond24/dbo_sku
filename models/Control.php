@@ -74,6 +74,23 @@ class Control
         }
     }
 
+    public function findControlsByIDChair($IDChair)
+    {
+        $this->db->query('SELECT * FROM controlsforgroups 
+        JOIN controls on controlsforgroups.IDControl = controls.IDControl
+        JOIN disciplines on disciplines.IDDiscipline = controls.IDDiscipline
+        JOIN groups on groups.IDGroup = controlsforgroups.IDGroup
+        JOIN teachers on teachers.IDTeacher = controlsforgroups.IDTeacher
+        WHERE disciplines.IDChair = :IDChair;');
+        $this->db->bind(':IDChair', $IDChair);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
     public function findControlsByIDChairTeacherSelect($IDChair)
     {
         $this->db->query('SELECT * FROM disciplines WHERE disciplines.IDChair = :IDChair;');
@@ -106,25 +123,90 @@ class Control
         }
     }
 
-//     public function insertControl($data)
-//     {
-//         $sql = 'INSERT INTO controls (IDDiscipline) VALUES (:IDDiscipline);';
-//         $sql .= 'INSERT INTO controlsforgroups 
-//             (IDGroup, IDTeacher, ControlDate, IDControl) 
-//             VALUES ();';
-// //            $this->db->query('INSERT INTO criteria
-// //            (IDCriteria, IDControlsForGroups, criteria, maxScore) VALUES
-// //            (NULL, )';
-//         $this->db->query($sql);
-//             $this->db->bind(':IDDiscipline', $data['dsip']);
-//             $this->db->bind(':usersEmail', $tokenEmail);
-//         $row = $this->db->resultSet();
+    public function insertControl($data)
+    {
+        $sql = 'INSERT INTO controls (IDDiscipline) VALUES (:IDDiscipline);';
+        $sql .= 'INSERT INTO controlsforgroups
+            (IDGroup, IDTeacher, ControlDate, IDControl)
+            VALUES (:IDGroup, :IDTeacher, :ControlDate,
+                    (SELECT MAX(IDControl) FROM controls AS a));';
+        $sql .= 'INSERT INTO tickets
+            (IDControlsForGroups, ticketText) VALUES';
+        foreach ($data['tickets'] as $index => $ticketText) {
+            $sql .= "((SELECT MAX(IDControlsForGroups ) FROM controlsforgroups AS aa), '$ticketText')";
+            if ($index != count($data['tickets']) - 1) $sql .= ', ';
+        }
+        $sql .= ';';
+        $sql .= 'INSERT INTO criteria
+            (IDControlsForGroups, criteria, maxScore) VALUES';
+        foreach ($data['indicators'] as $index => $indicator) {
+            $sql .= "((SELECT MAX(IDControlsForGroups ) FROM controlsforgroups AS aa), 
+            '$indicator', '{$data['indicators_score'][$index]}')";
+            if ($index != count($data['indicators']) - 1) $sql .= ', ';
+        }
+        $sql .= ';';
+        $this->db->query($sql);
+        $this->db->bind(':IDDiscipline', $data['dsip']);
+        $this->db->bind(':IDGroup', $data['group']);
+        $this->db->bind(':IDTeacher', $data['IDUser']);
+        $this->db->bind(':ControlDate', $data['datetimePicker']);
 
-//         //Check row
-//         if ($this->db->rowCount() > 0) {
-//             return $row;
-//         } else {
-//             return false;
-//         }
-//     }
+        //Execute
+        if ($this->db->execute()) {
+            return $sql;
+            //            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function DeleteControl($data)
+    {
+        $sql = 'DELETE FROM controlsforgroups WHERE IDControlsForGroups = :IDControlsForGroups;';
+        $this->db->query($sql);
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function ControlForGroupsApprove($data)
+    {
+        $sql = 'UPDATE controlsforgroups SET Approve = 1 WHERE IDControlsForGroups = :IDControlsForGroups;';
+        $this->db->query($sql);
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        if ($this->db->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function GetCriteria($data)
+    {
+        $this->db->query('SELECT * FROM criteria
+	        WHERE IDControlsForGroups = :IDControlsForGroups;');
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    public function GetTickets($data)
+    {
+        $this->db->query('SELECT * FROM tickets
+	        WHERE IDControlsForGroups = :IDControlsForGroups;');
+        $this->db->bind(':IDControlsForGroups', $data['IDControlsForGroups']);
+        $row = $this->db->resultSet();
+        if ($this->db->rowCount() > 0) {
+            return $row;
+        } else {
+            return false;
+        }
+    }
 }

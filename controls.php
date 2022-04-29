@@ -1,6 +1,6 @@
 <?php
 include_once 'header.php';
-// require_once './controllers/Controls.php';
+include_once './helpers/session_helper.php';
 ?>
 
 <?php if (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'student') : ?>
@@ -38,8 +38,8 @@ include_once 'header.php';
 
         insertHTML('controllers/Controls.php', {'type': 'GetControlsStudent'}, 'list-group-item');
     </script>
-<?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'teacher'): ?>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<?php elseif (isset($_SESSION['IDUser']) and
+    ($_SESSION['usersType'] == 'teacher' or $_SESSION['usersType'] == 'head_teacher')): ?>
     <h5>Список экзаменов</h5>
     <div class="row">
         <ul class="list-group p0 col-4" id="controls"></ul>
@@ -58,10 +58,10 @@ include_once 'header.php';
                             id="group_id" name="group_id" required>
                     </select>
                 </div>
-                <div class="group form-group">
+                <div class="group form-group col-sm-6">
                     <label class="form-label" for="datetimePicker">Дата и время экзамена</label>
-                    <input class="flatpickr flatpickr-input active" id="datetimePicker" type="text"
-                           placeholder="Выберите дату экзамена" data-id="datetime" readonly="readonly">
+                    <input class="form-control active" id="datetimePicker" type="text"
+                           placeholder="Выберите дату экзамена" data-id="datetime" readonly="readonly" required>
                 </div>
                 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
                 <script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
@@ -77,7 +77,7 @@ include_once 'header.php';
                 <div class="tickets row">
                     <label for="inputTickets" class="col-sm-9 col-form-label">Билеты</label>
                     <div id="tickets">
-                        <input class="form-control my-2" type="text" value="" placeholder="Номер билета">
+                        <input class="form-control my-2" type="text" value="" placeholder="Билет">
                     </div>
                     <div class="col-sm-6 mt-2">
                         <button type="button" id="add_ticket" class="form-control btn btn-primary"
@@ -88,7 +88,11 @@ include_once 'header.php';
                 <div class="indicator row">
                     <label for="inputIndicator" class="col-sm-9 col-form-label">Критерии</label>
                     <div id="indicators">
-                        <input class="form-control my-2" type="text" value="" placeholder="Критерий">
+                        <div class="input-group">
+                            <input class="form-control my-2" id="indicator" type="text" value="" placeholder="Критерий">
+                            <input class="form-control my-2" id="indicator_score" type="text" value=""
+                                   placeholder="Баллы">
+                        </div>
                     </div>
                     <div class="col-sm-6 ">
                         <button type="button" id="add_indicator" class="form-control btn btn-primary mt-2"
@@ -189,14 +193,17 @@ include_once 'header.php';
     <script>
         let addticket = () => {
             $('#tickets').append(`
-                <input class="form-control my-2"  type="text" value="" placeholder="Номер билета">
+                <input class="form-control my-2"  type="text" value="" placeholder="Билет">
             `)
         }
         $(document).delegate('#add_ticket', 'click', addticket)
 
         let addIndicator = () => {
             $('#indicators').append(`
-                <input class="form-control my-2" type="text" value="" placeholder="Критерий">
+                <div class="input-group">
+                    <input class="form-control my-2" id="indicator" type="text" value="" placeholder="Критерий">
+                    <input class="form-control my-2" id="indicator_score"  type="text" value="" placeholder="Баллы">
+                </div>
             `)
         }
         $(document).delegate('#add_indicator', 'click', addIndicator)
@@ -204,18 +211,24 @@ include_once 'header.php';
             let formData = {
                 type: 'insertControl',
                 IDUser: '<?= $_SESSION['IDUser']?>',
+                datetimePicker: $('#datetimePicker').val(),
                 group: $('#group_id').val(),
                 dsip: $('#name_disp').val(),
                 tickets: [],
-                indicators: []
+                indicators: [],
+                indicators_score: []
             };
             let tickets_form = $('#tickets>input')
             $(tickets_form).each((index, element) => {
                 formData.tickets.push($(element).val())
             })
-            let indicators_form = $('#indicators>input')
+            let indicators_form = $('#indicators>div>input[id=indicator]')
             $(indicators_form).each((index, element) => {
                 formData.indicators.push($(element).val())
+            })
+            let indicators_score_form = $('#indicators>div>input[id=indicator_score]')
+            $(indicators_score_form).each((index, element) => {
+                formData.indicators_score.push($(element).val())
             })
             console.log(formData)
             $.ajax({
@@ -231,18 +244,6 @@ include_once 'header.php';
         }
         $(document).delegate('#save', 'click', sendForm)
     </script>
-<?php elseif (isset($_SESSION['IDUser']) and $_SESSION['usersType'] == 'head_teacher') : ?>
-    <div class="row">
-        <ul class="list-group col-4">
-            <li class="list-group-item">Управление IT-проектами</li>
-            <li class="list-group-item">Программная инженерия</li>
-            <li class="list-group-item">Инструментальные средства разработки</li>
-        </ul>
-        <div class="main card col-8 p-2 ml-2">
-            <form action=""></form>
-            <button type="button" class="btn btn-primary">Подтвердить экзамен</button>
-        </div>
-    </div>
 <?php endif; ?>
 <?php
 include_once 'footer.php';
