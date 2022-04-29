@@ -21,6 +21,16 @@ class Controls
         }
     }
 
+    public function GetControlStudent()
+    {
+        $controls = $this->controlModel->findControlByIDStudent($_SESSION['IDUser'], $_GET['IDControlsForGroups']);
+        if ($controls) {
+            echo json_encode($controls);
+        } else {
+            return false;
+        }
+    }
+
     public function GetControlsTeacher()
     {
         $controls = $this->controlModel->findControlsByUidTeacher($_SESSION['IDUser']);
@@ -98,25 +108,26 @@ class Controls
 
     public function GetCriteria()
     {
-        if ($_SESSION['usersType'] != 'head_teacher') return false;
+//        if (!isset($_SESSION['usersType'])) return false;
         $data = $_POST;
+//        var_dump($_POST);
         $query = $this->controlModel->GetCriteria($data);
         if ($query) {
             echo json_encode($query);
         } else {
-            return 'Критерии не указаны';
+            echo 'Критерии не указаны';
         }
     }
 
     public function GetTickets()
     {
-        if ($_SESSION['usersType'] != 'head_teacher') return false;
+//        if (!isset($_SESSION['usersType'])) return false;
         $data = $_POST;
         $query = $this->controlModel->GetTickets($data);
         if ($query) {
             echo json_encode($query);
         } else {
-            return 'Билеты не указаны';
+            echo 'Билеты не указаны';
         }
     }
 }
@@ -143,6 +154,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION)) {
             break;
         case 'GetControlsStudent':
             $init->GetControlsStudent();
+            break;
+        case 'GetControlStudent':
+            $init->GetControlStudent();
             break;
         case 'GetControlsToApprove':
             $init->GetControlsToApprove();

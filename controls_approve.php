@@ -154,7 +154,7 @@ else: ?>
                                         ${el['criteria']}
                                     </div>
                                     <div class="col-sm-2 text-secondary">
-                                        ${el['maxScore']}gi
+                                        ${el['maxScore']}
                                     </div>
                                 </div>
                                 <hr>
